@@ -1,0 +1,44 @@
+# Configuration de l'application qui UTILISE votre module
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: UEMOA QR API
+  main:
+    allow-bean-definition-overriding: true  # Permet l'override des beans si nécessaire
+
+# Configuration de votre module (héritée automatiquement)
+uemoa:
+  qr:
+    payment:
+      default-country-code: CI
+      generate-qr-image: true
+      qr-image-size: 300
+      validate-crc: true
+
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    com.aveplus.uemoa: DEBUG
+    com.example.qrapi: DEBUG

@@ -1,0 +1,92 @@
+<!-- 
+    Configuration Maven pour le déploiement sur Nexus/Artifactory
+    
+    Ce fichier doit être placé dans :
+    - ~/.m2/settings.xml (Linux/Mac)
+    - C:\Users\{username}\.m2\settings.xml (Windows)
+    
+    Remplacez les valeurs suivantes :
+    - YOUR-NEXUS-URL : URL de votre serveur Nexus
+    - your-username : Votre nom d'utilisateur Nexus
+    - your-password : Votre mot de passe Nexus
+-->
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    
+    <!-- Serveurs pour l'authentification -->
+    <servers>
+        <!-- Configuration pour Nexus -->
+        <server>
+            <id>nexus-releases</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+        <server>
+            <id>nexus-snapshots</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+        
+        <!-- Configuration alternative pour Artifactory -->
+        <server>
+            <id>artifactory-releases</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+        <server>
+            <id>artifactory-snapshots</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+    </servers>
+    
+    <!-- Miroirs (optionnel) -->
+    <mirrors>
+        <!-- Miroir pour Nexus -->
+        <mirror>
+            <id>nexus</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://YOUR-NEXUS-URL/repository/maven-public/</url>
+        </mirror>
+    </mirrors>
+    
+    <!-- Profils -->
+    <profiles>
+        <!-- Profil Nexus -->
+        <profile>
+            <id>nexus</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    
+    <!-- Profil actif par défaut -->
+    <activeProfiles>
+        <activeProfile>nexus</activeProfile>
+    </activeProfiles>
+</settings>

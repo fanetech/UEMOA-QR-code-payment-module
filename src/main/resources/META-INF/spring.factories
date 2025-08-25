@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.aveplus.uemoa.qr.config.UemoaQRAutoConfiguration

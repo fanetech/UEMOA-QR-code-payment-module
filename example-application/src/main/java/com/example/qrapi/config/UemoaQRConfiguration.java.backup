@@ -1,0 +1,68 @@
+package com.example.qrapi.config;
+
+import com.aveplus.uemoa.qr.config.UemoaQrProperties;
+import com.aveplus.uemoa.qr.generator.DynamicQRGenerator;
+import com.aveplus.uemoa.qr.generator.P2PQRGenerator;
+import com.aveplus.uemoa.qr.generator.StaticQRGenerator;
+import com.aveplus.uemoa.qr.parser.QRParser;
+import com.aveplus.uemoa.qr.service.UemoaQRService;
+import com.aveplus.uemoa.qr.utils.CRCCalculator;
+import com.aveplus.uemoa.qr.utils.EMVFormatter;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * Configuration manuelle des beans du module UEMOA QR
+ * Au cas où l'auto-configuration ne fonctionne pas
+ */
+@Configuration
+@EnableConfigurationProperties(UemoaQrProperties.class)
+public class UemoaQRConfiguration {
+    
+    @Bean
+    public CRCCalculator crcCalculator() {
+        return new CRCCalculator();
+    }
+    
+    @Bean
+    public EMVFormatter emvFormatter() {
+        return new EMVFormatter();
+    }
+    
+    @Bean
+    public StaticQRGenerator staticQRGenerator(EMVFormatter formatter, 
+                                               CRCCalculator crcCalculator,
+                                               UemoaQrProperties properties) {
+        return new StaticQRGenerator(formatter, crcCalculator, properties);
+    }
+    
+    @Bean
+    public DynamicQRGenerator dynamicQRGenerator(EMVFormatter formatter, 
+                                                 CRCCalculator crcCalculator,
+                                                 UemoaQrProperties properties) {
+        return new DynamicQRGenerator(formatter, crcCalculator, properties);
+    }
+    
+    @Bean
+    public P2PQRGenerator p2pQRGenerator(EMVFormatter formatter, 
+                                         CRCCalculator crcCalculator,
+                                         UemoaQrProperties properties) {
+        return new P2PQRGenerator(formatter, crcCalculator, properties);
+    }
+    
+    @Bean
+    public QRParser qrParser(EMVFormatter formatter, CRCCalculator crcCalculator) {
+        return new QRParser(formatter, crcCalculator);
+    }
+    
+    @Bean
+    public UemoaQRService uemoaQRService(StaticQRGenerator staticQRGenerator,
+                                         DynamicQRGenerator dynamicQRGenerator,
+                                         P2PQRGenerator p2pQRGenerator,
+                                         QRParser qrParser,
+                                         UemoaQrProperties properties) {
+        return new UemoaQRService(staticQRGenerator, dynamicQRGenerator, 
+                                 p2pQRGenerator, qrParser, properties);
+    }
+}
